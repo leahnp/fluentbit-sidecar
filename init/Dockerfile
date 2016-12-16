@@ -9,6 +9,7 @@ RUN apk --no-cache --update add \
                             build-base \
                             ca-certificates \
                             zlib-dev \
+                            git \
                             cmake && \
     wget -O /tmp/fluent-bit-0.9.1.tar.gz http://fluentbit.io/releases/0.9/fluent-bit-0.9.1.tar.gz && \
     cd /tmp && tar zxfv fluent-bit-0.9.1.tar.gz && cd fluent-bit-0.9.1/build/ && \
@@ -31,7 +32,7 @@ RUN chown -R fluent:fluent /fluent-bit
 USER fluent
 WORKDIR /home/fluent
 
-RUN git clone https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
+RUN  https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
     cd fluent-bit-kafka-output-plugin && \
     make .
 
