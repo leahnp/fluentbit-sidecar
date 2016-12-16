@@ -27,11 +27,10 @@ RUN mkdir -p /fluent-bit/log
 RUN mkdir -p /fluent-bit/etc
 RUN chown -R fluent:fluent /fluent-bit
 
-# put output plugin in folder in plugins
-RUN -O /fluent-bit/plugins/out_kafka/ wget https://github.com/leahnp/fluent-bit-kafka-output-plugin
-
-# run the makefile to get a build
-RUN Make #makefil in out_kafka plugin
+RUN cd plugins && \
+       git clone https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
+       cd fluent-bit-kafka-output-plugin && \
+       make .
 
 USER fluent
 WORKDIR /home/fluent
