@@ -9,6 +9,7 @@ RUN apk --no-cache --update add \
                             build-base \
                             ca-certificates \
                             zlib-dev \
+                            git \
                             cmake && \
     wget -O /tmp/fluent-bit-0.9.1.tar.gz http://fluentbit.io/releases/0.9/fluent-bit-0.9.1.tar.gz && \
     cd /tmp && tar zxfv fluent-bit-0.9.1.tar.gz && cd fluent-bit-0.9.1/build/ && \
