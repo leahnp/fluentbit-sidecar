@@ -32,7 +32,7 @@ RUN chown -R fluent:fluent /fluent-bit
 USER fluent
 WORKDIR /home/fluent
 
-RUN  https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
+RUN  https://github.com/leahnp/fluent-bit-kafka-output-plugin.git && \
     cd fluent-bit-kafka-output-plugin && \
     make .
 
