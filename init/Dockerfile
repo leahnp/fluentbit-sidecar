@@ -31,9 +31,9 @@ RUN chown -R fluent:fluent /fluent-bit
 USER fluent
 WORKDIR /home/fluent
 
-RUN fluent cd plugins && \
-    fluent git clone https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
-    fluent cd fluent-bit-kafka-output-plugin && \
-    fluent make .
+RUN cd /fluent-bit/plugins && \
+    git clone https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
+    cd fluent-bit-kafka-output-plugin && \
+    make .
 
 ENTRYPOINT ["sh"]
