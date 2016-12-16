@@ -28,12 +28,12 @@ RUN mkdir -p /fluent-bit/etc
 RUN chown -R fluent:fluent /fluent-bit
 
 
+USER fluent
+WORKDIR /home/fluent
+
 RUN sudo cd plugins && \
     sudo git clone https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
     sudo cd fluent-bit-kafka-output-plugin && \
     sudo make .
-
-USER fluent
-WORKDIR /home/fluent
 
 ENTRYPOINT ["sh"]
