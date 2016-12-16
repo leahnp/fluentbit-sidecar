@@ -27,12 +27,13 @@ RUN mkdir -p /fluent-bit/log
 RUN mkdir -p /fluent-bit/etc
 RUN chown -R fluent:fluent /fluent-bit
 
-RUN cd plugins && \
-       git clone https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
-       cd fluent-bit-kafka-output-plugin && \
-       make .
 
 USER fluent
 WORKDIR /home/fluent
 
+RUN cd plugins && \
+       git clone https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
+       cd fluent-bit-kafka-output-plugin && \
+       make .
+       
 ENTRYPOINT ["sh"]
