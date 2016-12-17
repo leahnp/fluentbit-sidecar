@@ -1,6 +1,8 @@
 FROM alpine:3.4
-MAINTAINER Leah Petersen <leahnpetersen@gmail.com>
-LABEL Description="Fluent Bit with Kafka out docker image"
+MAINTAINER Eduardo Silva <eduardo@treasure-data.com>
+LABEL Description="Fluent Bit docker image" Vendor="Fluent Organization" Version="1.1"
+
+RUN mkdir -p /fluent-bit/bin
 
 # Do not split this into multiple RUN!
 # Docker creates a layer for every RUN-Statement
@@ -13,11 +15,10 @@ RUN apk --no-cache --update add \
                             cmake && \
     wget -O /tmp/fluent-bit-0.9.1.tar.gz http://fluentbit.io/releases/0.9/fluent-bit-0.9.1.tar.gz && \
     cd /tmp && tar zxfv fluent-bit-0.9.1.tar.gz && cd fluent-bit-0.9.1/build/ && \
-    cmake -DFLB_DEBUG=On -DFLB_TRACE=On ../ && \
+    cmake -DFLB_DEBUG=On -DFLB_TRACE=On -DCMAKE_INSTALL_PREFIX=/fluent-bit/bin ../ && \
     make && make install && \
     apk del zlib-dev && \
     rm -rf /tmp/*
-
 
 RUN adduser -D -g '' -u 1000 -h /home/fluent fluent
 RUN chown -R fluent:fluent /home/fluent
@@ -28,7 +29,6 @@ RUN mkdir -p /fluent-bit/log
 RUN mkdir -p /fluent-bit/etc
 RUN chown -R fluent:fluent /fluent-bit
 
-
 USER fluent
 WORKDIR /home/fluent
 
@@ -36,4 +36,4 @@ RUN git clone https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
     cd fluent-bit-kafka-output-plugin && \
     make .
 
-ENTRYPOINT ["sh"]
+ENTRYPOINT ["/fluent-bit/bin/fluent-bit"]
