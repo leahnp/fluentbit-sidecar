@@ -34,7 +34,9 @@ RUN chown -R fluent:fluent /go
 RUN chown -R fluent:fluent /fluent-bit
 RUN chown -R fluent:fluent /fluent-bit-kafka-output-plugin
 
+COPY fluent.conf /home/fluent/fluent.conf
+
 USER fluent
 WORKDIR /home/fluent
 
-ENTRYPOINT ["/usr/local/bin/fluent-bit", "-e", "/fluent-bit-kafka-output-plugin/out_kafka.so"]
+ENTRYPOINT ["/usr/local/bin/fluent-bit", "-e", "/fluent-bit-kafka-output-plugin/out_kafka.so", "-c", "/home/fluent/fluent.conf"]
