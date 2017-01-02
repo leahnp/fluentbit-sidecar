@@ -1,2 +1,2 @@
 # fluentbit-sidecar
-Fluentbit Sidecar Pod for Kubernetes Logging.
+Fluentbit Sidecar Pod for Kubernetes Logging
