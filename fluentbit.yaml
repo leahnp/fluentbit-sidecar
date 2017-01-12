@@ -8,8 +8,8 @@ metadata:
     kubernetes.io/cluster-service: "true"
     spec:
       containers:
-      - name: fluentbit-kafka
-        # image: quay.io/samsung_cnct/fluentd_daemonset
+      - name: fluentbit
+        image: quay.io/samsung_cnct/fluentbit-sidecar
         resources:
           limits:
             memory: 200Mi
