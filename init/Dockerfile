@@ -19,10 +19,6 @@ RUN   apt-get update && \
     cmake -DCMAKE_BUILD_TYPE=DEBUG -DFLB_DEBUG=On -DFLB_TRACE=On -DFLB_PROXY_GO=On ../ && \
     make && make install
 
-RUN git clone https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
-    cd fluent-bit-kafka-output-plugin && \
-    make
-
 RUN useradd -ms /bin/bash fluent
 RUN chown -R fluent:fluent /home/fluent
 
@@ -32,11 +28,10 @@ RUN mkdir -p /fluent-bit/log
 RUN mkdir -p /fluent-bit/etc
 RUN chown -R fluent:fluent /go
 RUN chown -R fluent:fluent /fluent-bit
-RUN chown -R fluent:fluent /fluent-bit-kafka-output-plugin
 
 COPY fluent.conf /home/fluent/fluent.conf
 
 USER fluent
 WORKDIR /home/fluent
 
-ENTRYPOINT ["/usr/local/bin/fluent-bit", "-e", "/fluent-bit-kafka-output-plugin/out_kafka.so", "-c", "/home/fluent/fluent.conf"]
+ENTRYPOINT ["/usr/local/bin/fluent-bit", "-c", "/home/fluent/fluent.conf"]
