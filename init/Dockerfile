@@ -23,8 +23,6 @@ RUN git clone https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
     cd fluent-bit-kafka-output-plugin && \
     make
 
-COPY fluent.conf /home/fluent/fluent.conf
-
 RUN useradd -ms /bin/bash fluent
 RUN chown -R fluent:fluent /home/fluent
 
@@ -36,8 +34,10 @@ RUN chown -R fluent:fluent /go
 RUN chown -R fluent:fluent /fluent-bit
 RUN chown -R fluent:fluent /fluent-bit-kafka-output-plugin
 
+COPY fluent.conf /home/fluent/fluent.conf
+
 
 USER fluent
 WORKDIR /home/fluent
 
-ENTRYPOINT ["/usr/local/bin/fluent-bit", "-e", "/fluent-bit-kafka-output-plugin/out_kafka.so", "-c", "/home/fluent/fluent.conf"]
+ENTRYPOINT ["sh"]
