@@ -38,5 +38,3 @@ COPY fluent.conf /home/fluent/fluent.conf
 
 USER fluent
 WORKDIR /home/fluent
-
-ENTRYPOINT ["/usr/local/bin/fluent-bit", "-c", "/home/fluent/fluent.conf"]
