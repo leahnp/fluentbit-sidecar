@@ -39,4 +39,4 @@ COPY fluent.conf /home/fluent/fluent.conf
 USER fluent
 WORKDIR /home/fluent
 
-ENTRYPOINT ["/usr/local/bin/fluent-bit", "-e", "/fluent-bit-kafka-output-plugin/out_kafka.so", "-c", "/home/fluent/fluent.conf"]
+ENTRYPOINT ["/usr/local/bin/fluent-bit", "-e", "/fluent-bit-kafka-output-plugin/out_kafka.so"]
