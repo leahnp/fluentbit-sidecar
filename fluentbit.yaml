@@ -1,32 +1,28 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: fluentbit-sidecar
+  name: log-app
   labels:
-    k8s-app: fluentd-logging
-    version: v1
-    kubernetes.io/cluster-service: "true"
-    spec:
-      containers:
-      - name: fluentbit
-        image: quay.io/samsung_cnct/fluentbit-sidecar
-        resources:
-          limits:
-            memory: 200Mi
-          requests:
-            cpu: 100m
-            memory: 200Mi
-        volumeMounts:
-        - name: varlog
-          mountPath: /var/log
-        - name: varlibdockercontainers
-          mountPath: /var/lib/docker/containers
-          readOnly: true
-      terminationGracePeriodSeconds: 30
-      volumes:
-      - name: varlog
-        hostPath:
-          path: /var/log
-      - name: varlibdockercontainers
-        hostPath:
-          path: /var/lib/docker/containers
+    app: log-app
+spec:
+  containers:
+  - name: log-app
+    image: quay.io/leahnp/leah_log_app:latest
+    ports:
+    - containerPort: 8080
+    volumeMounts:
+    - name: log-storage
+      mountPath: /var/log
+  - name: sidecar-log-collector
+    image: quay.io/leahnp/fluentbit-sidecar:latest
+    resources:
+      limits:
+        cpu: 100m
+        memory: 200Mi
+    volumeMounts:
+    - name: log-storage
+      readOnly: true
+      mountPath: /mnt/log
+  volumes:
+  - name: log-storage
+    emptyDir: {}
