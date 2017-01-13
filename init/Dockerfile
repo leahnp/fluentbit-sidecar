@@ -36,8 +36,7 @@ RUN chown -R fluent:fluent /fluent-bit-kafka-output-plugin
 
 COPY fluent.conf /home/fluent/fluent.conf
 
-
 USER fluent
 WORKDIR /home/fluent
 
-ENTRYPOINT ["sh"]
+ENTRYPOINT ["/usr/local/bin/fluent-bit", "-c", "/home/fluent/fluent.conf"]
