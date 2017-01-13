@@ -19,6 +19,10 @@ RUN   apt-get update && \
     cmake -DCMAKE_BUILD_TYPE=DEBUG -DFLB_DEBUG=On -DFLB_TRACE=On -DFLB_PROXY_GO=On ../ && \
     make && make install
 
+RUN git clone https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
+    cd fluent-bit-kafka-output-plugin && \
+    make
+
 RUN useradd -ms /bin/bash fluent
 RUN chown -R fluent:fluent /home/fluent
 
