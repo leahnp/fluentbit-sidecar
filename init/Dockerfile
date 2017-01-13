@@ -26,7 +26,6 @@ RUN chown -R fluent:fluent /home/fluent
 RUN mkdir -p /fluent-bit/log
 # configuration/plugins path (default: copied from .)
 RUN mkdir -p /fluent-bit/etc
-RUN chown -R fluent:fluent /go
 RUN chown -R fluent:fluent /fluent-bit
 
 COPY fluent.conf /home/fluent/fluent.conf
