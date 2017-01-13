@@ -7,7 +7,9 @@ ENV GOPATH /go
 ENV GOBIN $GOPATH/bin
 ENV PATH $GOBIN:$PATH
 
-RUN     apt-get install -y \
+RUN     apt-get update && \
+        apt-get -y upgrade && \
+        apt-get install -y \
         build-essential \
         zlib1g-dev \
         git \
