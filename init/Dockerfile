@@ -7,16 +7,15 @@ ENV GOPATH /go
 ENV GOBIN $GOPATH/bin
 ENV PATH $GOBIN:$PATH
 
-RUN     apt-get update && \
+RUN   apt-get update && \
         apt-get -y upgrade && \
         apt-get install -y \
         build-essential \
         zlib1g-dev \
         git \
-        gdb \
         golang \
         cmake && \
-    git clone https://github.com/fluent/fluent-bit && cd fluent-bit/build && \
+    git clone -b v0.10.0 https://github.com/fluent/fluent-bit && cd fluent-bit/build && \
     cmake -DCMAKE_BUILD_TYPE=DEBUG -DFLB_DEBUG=On -DFLB_TRACE=On -DFLB_PROXY_GO=On ../ && \
     make && make install
 
@@ -40,4 +39,4 @@ COPY fluent.conf /home/fluent/fluent.conf
 USER fluent
 WORKDIR /home/fluent
 
-ENTRYPOINT ["/usr/local/bin/fluent-bit", "-c", "/home/fluent/fluent.conf"]
+ENTRYPOINT ["/usr/local/bin/fluent-bit", "-e", "/fluent-bit-kafka-output-plugin/out_kafka.so", "-c", "/home/fluent/fluent.conf"]
