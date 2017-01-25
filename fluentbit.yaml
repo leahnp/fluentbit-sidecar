@@ -14,7 +14,7 @@ spec:
     - name: log-storage
       mountPath: /var/log
   - name: sidecar-log-collector
-    image: quay.io/leahnp/fluentbit-sidecar:latest
+    image: quay.io/leahnp/testing_sidecar:latest
     resources:
       limits:
         cpu: 100m
