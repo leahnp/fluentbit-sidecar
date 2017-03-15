@@ -15,7 +15,7 @@ RUN   apt-get update && \
         git \
         golang \
         cmake && \
-    git clone https://github.com/fluent/fluent-bit && cd fluent-bit/build && \
+    git clone -b master https://github.com/fluent/fluent-bit && cd fluent-bit/build && \
     cmake -DCMAKE_BUILD_TYPE=DEBUG -DFLB_DEBUG=On -DFLB_TRACE=On -DFLB_PROXY_GO=On ../ && \
     make && make install
 
