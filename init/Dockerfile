@@ -14,9 +14,10 @@ RUN   apt-get update && \
         zlib1g-dev \
         git \
         golang \
+        gdb \
         cmake && \
-    git clone https://github.com/fluent/fluent-bit && cd fluent-bit/build && \
-    cmake -DCMAKE_BUILD_TYPE=DEBUG -DFLB_DEBUG=On -DFLB_TRACE=On -DFLB_PROXY_GO=On ../ && \
+    git clone -b master https://github.com/fluent/fluent-bit && cd fluent-bit/build && \
+    cmake -DCMAKE_BUILD_TYPE=RELEASE ../ && \
     make && make install
 
 RUN git clone https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
