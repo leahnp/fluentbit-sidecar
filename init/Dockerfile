@@ -1,43 +1,31 @@
-FROM ubuntu
+FROM gcr.io/google_containers/ubuntu-slim:0.6
+ENV DEBIAN_FRONTEND noninteractive
 
-MAINTAINER Leah Petersen <leahnpetersen@gmail.com>
+# Fluent Bit version
+ENV FLB_MAJOR 0
+ENV FLB_MINOR 11
+ENV FLB_PATCH 0
+ENV FLB_KUBE  2
+ENV FLB_VERSION 0.11.0
+
+MAINTAINER Eduardo Silva <eduardo@treasure-data.com>
 LABEL Description="Fluent Bit docker image" Vendor="Fluent Organization" Version="1.1"
+USER root
 
-ENV GOPATH /go
-ENV GOBIN $GOPATH/bin
-ENV PATH $GOBIN:$PATH
+# Install build tools
+RUN apt-get -qq update && \
+    apt-get install -y -qq curl ca-certificates build-essential cmake iputils-ping dnsutils make bash sudo wget unzip nano vim valgrind  && \
+    apt-get install -y -qq --reinstall lsb-base lsb-release && \
+    wget -O "/tmp/fluent-bit-$FLB_VERSION-dev.zip" "http://github.com/fluent/fluent-bit/archive/master.zip" && \
+    cd /tmp && \
+    unzip "fluent-bit-$FLB_VERSION-dev.zip" && \
+    cd "fluent-bit-master/build/" && \
+    cmake -DFLB_DEBUG=On -DFLB_TRACE=On \
+          -DCMAKE_INSTALL_PREFIX=/fluent-bit/ -DFLB_JEMALLOC=On ../&& \
+    make && make install && \
+    rm -rf /tmp/* /fluent-bit/include /fluent-bit/lib*
 
-RUN   apt-get update && \
-        apt-get -y upgrade && \
-        apt-get install -y \
-        build-essential \
-        zlib1g-dev \
-        git \
-        golang \
-        gdb \
-        cmake && \
-    git clone -b master https://github.com/fluent/fluent-bit && cd fluent-bit/build && \
-    cmake -DCMAKE_BUILD_TYPE=RELEASE ../ && \
-    make && make install
+COPY fluent-bit.conf /fluent-bit/etc/
+COPY parsers.conf /fluent-bit/etc/
 
-RUN git clone https://github.com/leahnp/fluent-bit-kafka-output-plugin && \
-    cd fluent-bit-kafka-output-plugin && \
-    make
-
-RUN useradd -ms /bin/bash fluent
-RUN chown -R fluent:fluent /home/fluent
-
-# for log storage (maybe shared with host)
-RUN mkdir -p /fluent-bit/log
-# configuration/plugins path (default: copied from .)
-RUN mkdir -p /fluent-bit/etc
-RUN chown -R fluent:fluent /go
-RUN chown -R fluent:fluent /fluent-bit
-RUN chown -R fluent:fluent /fluent-bit-kafka-output-plugin
-
-COPY fluent.conf /home/fluent/fluent.conf
-
-USER fluent
-WORKDIR /home/fluent
-
-ENTRYPOINT ["/usr/local/bin/fluent-bit", "-v", "-e", "/fluent-bit-kafka-output-plugin/out_kafka.so", "-c", "/home/fluent/fluent.conf"]
+CMD ["/fluent-bit/bin/fluent-bit", "-c", "/fluent-bit/etc/fluent-bit.conf"]
