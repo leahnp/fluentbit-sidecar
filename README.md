@@ -1,4 +1,4 @@
-# Fluent-Bit Daemonset for Kubernetes
+# Fluent-Bit Sidecar for Kubernetes
 
 Run [Fluent-Bit](http://fluentbit.io/) as a sidecar to collect logs and output them to elasticsearch in a Kubernetes cluster. Fluent-Bit is configured in this example to tail a named directory (for the example: /mnt/log/reference-logging.txt) and collect all logs from the file.
 
